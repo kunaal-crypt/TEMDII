@@ -1,0 +1,530 @@
+/* ==========================================================================
+   THE SUNSHINE VAULT V2 — COMPLETE STYLESHEET (style.css)
+   ========================================================================== */
+
+:root {
+    --primary-glow: #ffd000;
+    --accent-glow: #ffae00;
+    --bg-dark: #07080b;
+    --glass-bg: rgba(15, 18, 25, 0.7);
+    --glass-border: rgba(255, 208, 0, 0.25);
+    --text-main: #f5f5f7;
+    --text-sub: #a1a1a6;
+    --font-sans: 'Montserrat', sans-serif;
+    --font-serif: 'Cormorant Garamond', serif;
+    --font-hand: 'Caveat', cursive;
+}
+
+/* Temdi Realm Theme Override */
+body.temdi-mode {
+    --primary-glow: #ff3366;
+    --accent-glow: #ff0044;
+    --glass-border: rgba(255, 51, 102, 0.35);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    transition: background 0.8s ease;
+}
+
+/* 3D WebGL Canvas Layer */
+#webgl-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* UI Overlay Layer */
+.ui-layer {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* Glassmorphism Card Utility */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 28px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+    border-color: var(--primary-glow);
+    box-shadow: 0 35px 70px rgba(255, 208, 0, 0.15);
+}
+
+/* Navigation Bar */
+nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1000px;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.logo span {
+    color: var(--primary-glow);
+}
+
+.nav-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.icon-btn {
+    background: rgba(255, 208, 0, 0.15);
+    border: 1px solid var(--primary-glow);
+    color: var(--primary-glow);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+    background: var(--primary-glow);
+    color: var(--bg-dark);
+}
+
+.realm-toggle-btn {
+    background: rgba(255, 208, 0, 0.15);
+    border: 1px solid var(--primary-glow);
+    color: var(--text-main);
+    padding: 10px 22px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.realm-toggle-btn:hover {
+    background: var(--primary-glow);
+    color: var(--bg-dark);
+    transform: scale(1.05);
+}
+
+/* Hero Section */
+.hero-sec {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 20px 60px 20px;
+    text-align: center;
+}
+
+.hero-box {
+    max-width: 800px;
+    padding: 60px 40px;
+}
+
+.badge-tag {
+    display: inline-block;
+    background: rgba(255, 208, 0, 0.15);
+    color: var(--primary-glow);
+    border: 1px solid var(--primary-glow);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-family: var(--font-serif);
+    font-size: 4.5rem;
+    line-height: 1.1;
+    margin-bottom: 15px;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary-glow) 0%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sub-text {
+    color: var(--text-sub);
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 35px;
+}
+
+.cta-btn {
+    background: var(--primary-glow);
+    color: var(--bg-dark);
+    border: none;
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255, 208, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.cta-btn:hover {
+    transform: translateY(-3deg) scale(1.03);
+    box-shadow: 0 15px 40px rgba(255, 208, 0, 0.5);
+}
+
+/* Section Wrappers */
+section {
+    padding: 90px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.sec-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.sec-title h2 {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.sec-title p {
+    color: var(--text-sub);
+}
+
+/* ==========================================================================
+   3D FLIP CARD MECHANICS
+   ========================================================================== */
+.grid-3d {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.flip-card {
+    background-color: transparent;
+    height: 320px;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    padding: 35px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.flip-card-front .card-icon {
+    font-size: 3rem;
+    color: var(--primary-glow);
+    margin-bottom: 15px;
+}
+
+.flip-card-front h3 {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+.card-tag {
+    font-size: 0.75rem;
+    color: var(--primary-glow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.flip-hint {
+    font-size: 0.8rem;
+    color: var(--text-sub);
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+    border-color: var(--primary-glow);
+}
+
+.flip-card-back h4 {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    color: var(--primary-glow);
+    margin-bottom: 12px;
+}
+
+.flip-card-back p {
+    color: var(--text-sub);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   INTERACTIVE BOXES (ROAST & SLIDER)
+   ========================================================================== */
+.interactive-box {
+    padding: 45px;
+    text-align: center;
+}
+
+.quote-display {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-style: italic;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    color: var(--primary-glow);
+}
+
+.btn-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.roast-btn {
+    background: rgba(255, 85, 85, 0.2);
+    border: 1px solid #ff5555;
+    color: #ff7777;
+}
+
+.roast-btn:hover {
+    background: #ff5555;
+    color: #fff;
+}
+
+.respect-btn {
+    background: rgba(255, 208, 0, 0.2);
+    border: 1px solid var(--primary-glow);
+    color: var(--primary-glow);
+}
+
+.respect-btn:hover {
+    background: var(--primary-glow);
+    color: var(--bg-dark);
+}
+
+.slider-container {
+    margin-bottom: 25px;
+}
+
+.slider-container label {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+#panic-slider {
+    width: 80%;
+    max-width: 500px;
+    accent-color: var(--primary-glow);
+}
+
+.prediction-result {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    color: var(--primary-glow);
+}
+
+/* ==========================================================================
+   CERTIFICATE PREVIEW & MODAL
+   ========================================================================== */
+.cert-preview-box {
+    padding: 50px;
+    text-align: center;
+}
+
+.cert-icon {
+    font-size: 4rem;
+    color: var(--primary-glow);
+    margin-bottom: 20px;
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 750px;
+    padding: 40px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: none;
+    border: none;
+    color: var(--text-sub);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.diploma-frame {
+    border: 2px dashed var(--primary-glow);
+    padding: 40px 30px;
+    text-align: center;
+    border-radius: 16px;
+}
+
+.gold-crown {
+    font-size: 2.5rem;
+    color: var(--primary-glow);
+    margin-bottom: 10px;
+}
+
+.diploma-header h2 {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+}
+
+.diploma-sub {
+    color: var(--text-sub);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.diploma-name {
+    font-family: var(--font-serif);
+    font-size: 3.5rem;
+    color: var(--primary-glow);
+    margin: 20px 0;
+}
+
+.diploma-body {
+    color: var(--text-main);
+    line-height: 1.7;
+    font-size: 1.05rem;
+    margin-bottom: 30px;
+}
+
+.diploma-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+}
+
+.seal {
+    color: var(--primary-glow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+.seal i { font-size: 1.8rem; margin-bottom: 4px; }
+
+.signature {
+    text-align: right;
+}
+
+.sig-line {
+    font-family: var(--font-hand);
+    font-size: 1.8rem;
+    color: var(--primary-glow);
+    display: block;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-sub);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    h1 { font-size: 3rem; }
+    .diploma-name { font-size: 2.5rem; }
+}
