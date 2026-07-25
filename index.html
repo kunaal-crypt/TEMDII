@@ -10,284 +10,26 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- 3D & Animation Engines (Three.js + GSAP) -->
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- 3D & Animation Engines (Three.js + GSAP + Canvas Confetti) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
-    <style>
-        /* ==========================================================================
-           3D ENGINE & GLASSMORPHISM STYLES
-           ========================================================================== */
-        :root {
-            --primary-glow: #ffd000;
-            --accent-glow: #ffae00;
-            --bg-dark: #07080b;
-            --glass-bg: rgba(15, 18, 25, 0.65);
-            --glass-border: rgba(255, 208, 0, 0.25);
-            --text-main: #f5f5f7;
-            --text-sub: #a1a1a6;
-            --font-sans: 'Montserrat', sans-serif;
-            --font-serif: 'Cormorant Garamond', serif;
-        }
-
-        /* Temdi Realm Theme Override */
-        body.temdi-mode {
-            --primary-glow: #ff3366;
-            --accent-glow: #ff0044;
-            --glass-border: rgba(255, 51, 102, 0.35);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-sans);
-            overflow-x: hidden;
-            transition: background 0.8s ease;
-        }
-
-        /* 3D WebGL Canvas Layer */
-        #webgl-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* UI Overlay Layer */
-        .ui-layer {
-            position: relative;
-            z-index: 10;
-            pointer-events: auto;
-        }
-
-        /* Glassmorphism Card Utility */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .glass-card:hover {
-            border-color: var(--primary-glow);
-            box-shadow: 0 35px 70px rgba(255, 208, 0, 0.15);
-        }
-
-        /* Navigation Bar */
-        nav {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 1000px;
-            padding: 16px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .logo {
-            font-family: var(--font-serif);
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .logo span {
-            color: var(--primary-glow);
-        }
-
-        .realm-toggle-btn {
-            background: rgba(255, 208, 0, 0.15);
-            border: 1px solid var(--primary-glow);
-            color: var(--text-main);
-            padding: 8px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-        }
-
-        .realm-toggle-btn:hover {
-            background: var(--primary-glow);
-            color: var(--bg-dark);
-            transform: scale(1.05);
-        }
-
-        /* Hero Section */
-        .hero-sec {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 20px 60px 20px;
-            text-align: center;
-        }
-
-        .hero-box {
-            max-width: 800px;
-            padding: 60px 40px;
-        }
-
-        .badge-tag {
-            display: inline-block;
-            background: rgba(255, 208, 0, 0.15);
-            color: var(--primary-glow);
-            border: 1px solid var(--primary-glow);
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            font-family: var(--font-serif);
-            font-size: 4.5rem;
-            line-height: 1.1;
-            margin-bottom: 15px;
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary-glow) 0%, #ffffff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .sub-text {
-            color: var(--text-sub);
-            font-size: 1.15rem;
-            line-height: 1.8;
-            margin-bottom: 35px;
-        }
-
-        .cta-btn {
-            background: var(--primary-glow);
-            color: var(--bg-dark);
-            border: none;
-            padding: 16px 36px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 208, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-3deg) scale(1.03);
-            box-shadow: 0 15px 40px rgba(255, 208, 0, 0.5);
-        }
-
-        /* Section Wrappers */
-        section {
-            padding: 100px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .sec-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .sec-title h2 {
-            font-family: var(--font-serif);
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-
-        .sec-title p {
-            color: var(--text-sub);
-        }
-
-        /* 3D Holographic Orbit Section */
-        .orbit-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .orbit-info-card {
-            padding: 40px;
-        }
-
-        .orbit-info-card h3 {
-            font-family: var(--font-serif);
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: var(--primary-glow);
-        }
-
-        /* 3D Grid Archives */
-        .grid-3d {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .archive-card {
-            padding: 35px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .archive-card i {
-            font-size: 2.5rem;
-            color: var(--primary-glow);
-            margin-bottom: 20px;
-        }
-
-        .archive-card h4 {
-            font-size: 1.3rem;
-            margin-bottom: 12px;
-        }
-
-        .archive-card p {
-            color: var(--text-sub);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--text-sub);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.85rem;
-        }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 3rem; }
-            .orbit-container { grid-template-columns: 1fr; }
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
     <!-- REAL-TIME 3D THREE.JS CANVAS -->
     <canvas id="webgl-canvas"></canvas>
+
+    <!-- AUDIO ELEMENT -->
+    <audio id="bg-music" loop>
+        <source src="music/vibe.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- UI OVERLAY CONTENT -->
     <div class="ui-layer">
@@ -295,9 +37,14 @@
         <!-- GLASS NAVIGATION -->
         <nav class="glass-card">
             <div class="logo">NIHARIKA<span>.3D</span></div>
-            <button class="realm-toggle-btn" id="realm-btn">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Switch to Temdi Mode
-            </button>
+            <div class="nav-actions">
+                <button class="icon-btn" id="music-btn" title="Toggle Vibe Music">
+                    <i class="fa-solid fa-music"></i>
+                </button>
+                <button class="realm-toggle-btn" id="realm-btn">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Switch to Temdi Mode
+                </button>
+            </div>
         </nav>
 
         <!-- HERO SECTION -->
@@ -306,7 +53,7 @@
                 <span class="badge-tag">WEBGL 3D EXPERIENCE</span>
                 <h1>Crafted for <br><span class="gradient-text">Niharika</span></h1>
                 <p class="sub-text">
-                    An interactive 3D universe dedicated to the Class 11th secret note-sender, Diwali 2024 unmasking legend, and irreplaceable best friend. Move your mouse to fly the 3D plane.
+                    An interactive 3D universe dedicated to the Class 11th secret note-sender, Diwali 2024 unmasking legend, and irreplaceable best friend. Move your cursor to pilot the 3D plane.
                 </p>
                 <button class="cta-btn" id="firework-btn">
                     <i class="fa-solid fa-firework"></i> Trigger Diwali 2024 Particle Explosion
@@ -314,56 +61,120 @@
             </div>
         </section>
 
-        <!-- 3D HOLOGRAPHIC BRAIN & CAREER MATRIX -->
-        <section id="hologram">
+        <!-- 3D FLIP DOSSIER CARDS -->
+        <section id="dossiers">
             <div class="sec-title">
-                <h2>3D Holographic Dilemma Matrix</h2>
-                <p>Interactive WebGL sphere rendering Niharika's 2 AM study overthinking process.</p>
+                <h2>The Memory Archives</h2>
+                <p>Hover or tap cards to flip them over and reveal hidden dossier records.</p>
             </div>
 
-            <div class="orbit-container">
-                <div class="orbit-info-card glass-card">
-                    <h3>Academic Overthinker Mode</h3>
-                    <p class="sub-text">
-                        The glowing 3D wireframe matrix in the background simulates her brain evaluating 14 different college decisions, panicking over 1 chapter, and then casually scoring 98%+ anyway.
-                    </p>
+            <div class="grid-3d">
+                
+                <!-- CARD 1 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front glass-card">
+                            <i class="fa-solid fa-user-ninja card-icon"></i>
+                            <h3>The Block Incident</h3>
+                            <span class="card-tag">Class 11th Arc</span>
+                            <p class="flip-hint">Hover / Tap to Unfold ➔</p>
+                        </div>
+                        <div class="flip-card-back glass-card">
+                            <h4>The Secret Note Sender</h4>
+                            <p>Sent Class 11th notes anonymously, dropped zero hints, hit the block button instantly, and acted completely normal in class every single day.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="orbit-info-card glass-card">
-                    <h3>Reply Speed Engine</h3>
-                    <p class="sub-text">
-                        <b>Academic/Study Drama:</b> 0.001 seconds.<br>
-                        <b>Regular "Hi" Text:</b> 4 business days processing time.<br>
-                        <b>Status:</b> 100% Ride-or-Die Bestie.
-                    </p>
+
+                <!-- CARD 2 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front glass-card">
+                            <i class="fa-solid fa-sun card-icon"></i>
+                            <h3>Diwali 2024 Reveal</h3>
+                            <span class="card-tag">Unmasking Event</span>
+                            <p class="flip-hint">Hover / Tap to Unfold ➔</p>
+                        </div>
+                        <div class="flip-card-back glass-card">
+                            <h4>"It Was Me!"</h4>
+                            <p>The legendary text message that ended the mystery once and for all: "It's me, Niharika from your class!" Bestie arc officially locked in.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front glass-card">
+                            <i class="fa-solid fa-heart card-icon"></i>
+                            <h3>Pookie vs. Temdi</h3>
+                            <span class="card-tag">Dual Personality</span>
+                            <p class="flip-hint">Hover / Tap to Unfold ➔</p>
+                        </div>
+                        <div class="flip-card-back glass-card">
+                            <h4>Soft Core, Tough Exterior</h4>
+                            <p>Super introverted and sensitive on the inside, despite putting up a tough Temdi/Kutti attitude whenever she tries to act strict!</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ROAST & RESPECT MACHINE -->
+        <section id="roast-sec">
+            <div class="sec-title">
+                <h2>The Roast & Respect Engine</h2>
+                <p>Generate real-time custom quotes analyzing Niharika's habits.</p>
+            </div>
+
+            <div class="interactive-box glass-card">
+                <div class="quote-display" id="quote-output">
+                    "Click a button below to run the algorithm..."
+                </div>
+                <div class="btn-group">
+                    <button class="action-btn roast-btn" id="roast-trigger">
+                        <i class="fa-solid fa-fire"></i> Generate Gentle Roast
+                    </button>
+                    <button class="action-btn respect-btn" id="respect-trigger">
+                        <i class="fa-solid fa-crown"></i> Generate High Respect
+                    </button>
                 </div>
             </div>
         </section>
 
-        <!-- 3D DOSSIER ARCHIVES -->
-        <section id="dossiers">
+        <!-- 2 AM PANIC PREDICTOR -->
+        <section id="panic-sec">
             <div class="sec-title">
-                <h2>Unmasked Dossier Archives</h2>
-                <p>Click any card to trigger a camera focus pull in 3D space.</p>
+                <h2>2 AM Exam Panic Predictor</h2>
+                <p>Adjust her current overthinking level to calculate the exam outcome.</p>
             </div>
 
-            <div class="grid-3d">
-                <div class="archive-card glass-card">
-                    <i class="fa-solid fa-user-ninja"></i>
-                    <h4>The Block Incident</h4>
-                    <p>Sent Class 11th notes anonymously, dropped zero hints, hit the block button instantly, and acted normal in class.</p>
+            <div class="interactive-box glass-card">
+                <div class="slider-container">
+                    <label for="panic-slider">Current Overthinking Level: <span id="slider-val">50%</span></label>
+                    <input type="range" id="panic-slider" min="0" max="100" value="50">
                 </div>
+                <div class="prediction-result" id="panic-result">
+                    Status: Re-reading Chapter 14 for the 12th time...
+                </div>
+            </div>
+        </section>
 
-                <div class="archive-card glass-card">
-                    <i class="fa-solid fa-sun"></i>
-                    <h4>Diwali 2024 Reveal</h4>
-                    <p>The grand unmasking: "It was me, Niharika!" The mystery ended and the bestie arc officially locked in.</p>
-                </div>
+        <!-- GOLDEN DIPLOMA / CERTIFICATE SECTION -->
+        <section id="certificate-sec">
+            <div class="sec-title">
+                <h2>Official Recognition</h2>
+                <p>The highest award granted for extreme loyalty and elite study notes.</p>
+            </div>
 
-                <div class="archive-card glass-card">
-                    <i class="fa-solid fa-heart"></i>
-                    <h4>Sensitive Pookie Core</h4>
-                    <p>Super introverted and sensitive on the inside, despite trying to act like a tough Temdi on the outside!</p>
-                </div>
+            <div class="cert-preview-box glass-card">
+                <i class="fa-solid fa-award cert-icon"></i>
+                <h3>Golden Bestie Status Certificate</h3>
+                <p>Conferred upon Niharika for being an irreplaceable best friend, top-tier academic overthinker, and secret note legend.</p>
+                <button class="cta-btn cert-btn" id="claim-cert-btn">
+                    <i class="fa-solid fa-certificate"></i> Claim Official Diploma
+                </button>
             </div>
         </section>
 
@@ -374,210 +185,36 @@
 
     </div>
 
-    <!-- 3D REAL-TIME ENGINE SCRIPT -->
-    <script>
-        /* ==========================================================================
-           THREE.JS REAL-TIME 3D GRAPHICS ENGINE
-           ========================================================================== */
-        
-        // 1. SCENE, CAMERA & RENDERER SETUP
-        const canvas = document.getElementById('webgl-canvas');
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x07080b, 0.015);
+    <!-- CERTIFICATE MODAL POPUP -->
+    <div class="modal-overlay" id="cert-modal">
+        <div class="modal-content glass-card">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <div class="diploma-frame">
+                <div class="diploma-header">
+                    <i class="fa-solid fa-crown gold-crown"></i>
+                    <h2>CERTIFICATE OF BESTIE EXCELLENCE</h2>
+                    <span class="diploma-sub">This official document proudly certifies that</span>
+                </div>
+                <h1 class="diploma-name">NIHARIKA</h1>
+                <p class="diploma-body">
+                    Has officially achieved <b>Irreplaceable Golden Bestie Status</b>. Recognized for secret note operations, 2 AM academic panics, soft-hearted sensitivity, and being 100% ride-or-die.
+                </p>
+                <div class="diploma-footer">
+                    <div class="seal">
+                        <i class="fa-solid fa-certificate"></i>
+                        <span>OFFICIAL SEAL</span>
+                    </div>
+                    <div class="signature">
+                        <span class="sig-line">Verified Bestie</span>
+                        <small>March 10th Edition</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 30;
-
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        // 2. LIGHTING SYSTEM
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-        scene.add(ambientLight);
-
-        const pointLight = new THREE.PointLight(0xffd000, 2, 100);
-        pointLight.position.set(10, 20, 15);
-        scene.add(pointLight);
-
-        const blueLight = new THREE.PointLight(0x00aeff, 1.5, 100);
-        blueLight.position.set(-10, -20, -10);
-        scene.add(blueLight);
-
-        // 3. PROCEDURAL 3D GOLDEN PAPER PLANE MESH
-        const planeGroup = new THREE.Group();
-        
-        // Custom 3D Paper Airplane Geometry
-        const planeGeometry = new THREE.BufferGeometry();
-        const vertices = new Float32Array([
-             0,  0,  4,   // Nose (0)
-            -3,  0, -3,   // Left Wing Tip (1)
-             0,  1, -2,   // Top Ridge (2)
-             3,  0, -3,   // Right Wing Tip (3)
-             0, -1, -2    // Bottom Keel (4)
-        ]);
-
-        const indices = [
-            0, 1, 2,  // Left Top Wing
-            0, 2, 3,  // Right Top Wing
-            0, 4, 1,  // Left Bottom
-            0, 3, 4   // Right Bottom
-        ];
-
-        planeGeometry.setIndex(indices);
-        planeGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-        planeGeometry.computeVertexNormals();
-
-        const planeMaterial = new THREE.MeshPhongMaterial({
-            color: 0xffd000,
-            emissive: 0x332600,
-            wireframe: false,
-            flatShading: true,
-            side: THREE.DoubleSide
-        });
-
-        const paperPlaneMesh = new THREE.Mesh(planeGeometry, planeMaterial);
-        planeGroup.add(paperPlaneMesh);
-
-        // Wireframe Overlay for Cyber/3D Craft aesthetic
-        const wireMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.3 });
-        const wireMesh = new THREE.Mesh(planeGeometry, wireMaterial);
-        planeGroup.add(wireMesh);
-
-        planeGroup.position.set(0, 0, 10);
-        scene.add(planeGroup);
-
-        // 4. 5,000 GPU PARTICLES VORTEX (THE DIWALI STARFIELD)
-        const particleCount = 5000;
-        const particleGeometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(particleCount * 3);
-        const colors = new Float32Array(particleCount * 3);
-
-        for (let i = 0; i < particleCount * 3; i += 3) {
-            positions[i] = (Math.random() - 0.5) * 120;
-            positions[i + 1] = (Math.random() - 0.5) * 120;
-            positions[i + 2] = (Math.random() - 0.5) * 120;
-
-            // Warm yellow and golden particle tint
-            colors[i] = 1.0;
-            colors[i + 1] = 0.8 + Math.random() * 0.2;
-            colors[i + 2] = 0.2;
-        }
-
-        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-        const particleMaterial = new THREE.PointsMaterial({
-            size: 0.35,
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.8
-        });
-
-        const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
-        scene.add(particleSystem);
-
-        // 5. 3D HOLOGRAPHIC ICOSAHEDRON (ACADEMIC BRAIN)
-        const icoGeo = new THREE.IcosahedronGeometry(8, 2);
-        const icoMat = new THREE.MeshPhongMaterial({
-            color: 0xffd000,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.25
-        });
-        const icoMesh = new THREE.Mesh(icoGeo, icoMat);
-        icoMesh.position.set(15, -10, -10);
-        scene.add(icoMesh);
-
-        // 6. MOUSE INTERACTION & PHYSICS
-        let mouseX = 0;
-        let mouseY = 0;
-        let targetX = 0;
-        let targetY = 0;
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX / window.innerWidth) - 0.5;
-            mouseY = (e.clientY / window.innerHeight) - 0.5;
-        });
-
-        // 7. DIWALI 2024 FIREWORK BURST LOGIC
-        const fireworkBtn = document.getElementById('firework-btn');
-        if (fireworkBtn) {
-            fireworkBtn.addEventListener('click', () => {
-                // Animate 3D Plane Loop-de-Loop with GSAP
-                gsap.to(planeGroup.rotation, {
-                    x: planeGroup.rotation.x + Math.PI * 2,
-                    z: planeGroup.rotation.z + Math.PI * 2,
-                    duration: 1.5,
-                    ease: "power2.inOut"
-                });
-
-                // Burst particle system scale
-                gsap.to(particleSystem.scale, {
-                    x: 1.8, y: 1.8, z: 1.8,
-                    duration: 0.4,
-                    yoyo: true,
-                    repeat: 1,
-                    ease: "power2.out"
-                });
-            });
-        }
-
-        // 8. DUAL REALM SWITCHER (POOKIE vs TEMDI SHADER COLOR TRANSITION)
-        const realmBtn = document.getElementById('realm-btn');
-        let isTemdi = false;
-
-        if (realmBtn) {
-            realmBtn.addEventListener('click', () => {
-                isTemdi = !isTemdi;
-                document.body.classList.toggle('temdi-mode');
-
-                const targetColor = isTemdi ? new THREE.Color(0xff3366) : new THREE.Color(0xffd000);
-                
-                // Smoothly transition 3D Mesh materials
-                gsap.to(planeMaterial.color, { r: targetColor.r, g: targetColor.g, b: targetColor.b, duration: 1 });
-                gsap.to(pointLight.color, { r: targetColor.r, g: targetColor.g, b: targetColor.b, duration: 1 });
-                gsap.to(icoMat.color, { r: targetColor.r, g: targetColor.g, b: targetColor.b, duration: 1 });
-
-                realmBtn.innerHTML = isTemdi 
-                    ? '<i class="fa-solid fa-sun"></i> Switch to Pookie Mode' 
-                    : '<i class="fa-solid fa-wand-magic-sparkles"></i> Switch to Temdi Mode';
-            });
-        }
-
-        // 9. ANIMATION LOOP (60 FPS REAL-TIME RENDERING)
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Smooth Mouse Interpolation (Lerp)
-            targetX += (mouseX - targetX) * 0.05;
-            targetY += (mouseY - targetY) * 0.05;
-
-            // Rotate 3D Paper Plane based on mouse movement
-            planeGroup.rotation.y = targetX * 1.5;
-            planeGroup.rotation.x = -targetY * 1.5;
-            planeGroup.rotation.z = -targetX * 0.8;
-            planeGroup.position.x = targetX * 10;
-            planeGroup.position.y = -targetY * 10;
-
-            // Continuous rotation for background elements
-            particleSystem.rotation.y += 0.001;
-            particleSystem.rotation.x += 0.0005;
-
-            icoMesh.rotation.y += 0.005;
-            icoMesh.rotation.x += 0.003;
-
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        // 10. RESIZE HANDLER
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
+    <!-- Main JavaScript Logic -->
+    <script src="script.js"></script>
 </body>
 </html>
 
